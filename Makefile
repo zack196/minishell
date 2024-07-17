@@ -7,9 +7,10 @@ CC = cc
 INCLUDE = minishell.h
 
 SRC = ./main.c \
-	  ./garbege_colector.c \
+	  ./garbage_collector.c \
 	  ./libft_utils.c \
-	  ./utils.c
+	  ./utils.c \
+	  ./envirenement.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -22,7 +23,7 @@ $(OBJ): $(INCLUDE)
 	$(CC) $(CFLAGS)  -c $< -o $@
 
 $(NAME): $(OBJ) 
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) -lreadline -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
@@ -32,4 +33,7 @@ fclean: clean
 
 re: fclean all
 
+
+
 .PHONY: all clean fclean re 
+
