@@ -38,7 +38,7 @@ char	*get_var(char *line)
 char	*get_val(char *line, int *append)
 {
 	int		i;
-	int		j;
+	// int		j;
 	char	*val;
 
 	i = 0;

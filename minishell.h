@@ -4,6 +4,8 @@
 # include <stdio.h>
 # include <unistd.h> 
 # include <stdlib.h>
+# include <limits.h>
+# include "libft/libft.h"
 
 typedef struct s_env
 {
@@ -40,9 +42,15 @@ void    unset(t_minishell *sh, char *var);
 void	print_env(t_env *env, int mode_export);
 void    _env(t_minishell *sh);
 void	_export(t_minishell *sh);
+void    pwd(void);
+void    env_exit(char *exit_num);
+void	echo(char **argv, int flag_n);
+void    cd(const char *path);
 
 /*Libft*/
+int	ft_atoi(const char *str);
 int		ft_isalnum(int c);
+int		ft_isdigit(int c);
 int		ft_isalpha(int c);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -52,4 +60,10 @@ char	*ft_strrchr(const char *s, int c);
 int ft_strncmp(char *s1, char *s2, int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
+
+
+/*EXEC*/
+void	exec_cmd(t_env *sh_env, char *cmd);
+
+
 #endif

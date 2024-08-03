@@ -6,6 +6,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "../minishell.h"
 
 enum
 {
@@ -23,14 +24,6 @@ typedef struct s_token
 	int				check;
 	struct s_token	*next;
 }					t_token;
-
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	int				valid;
-	struct s_env	*next;
-}					t_env;
 
 typedef struct s_redi
 {
@@ -62,14 +55,14 @@ enum
 	SINGLE_EXP,
 };
 int	ft_strchr_2(const char *str, int c);
-int	ft_strcmp(const char *s1, const char *s2);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-char	*ft_strdup(const char *s1);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t	ft_strlen(const char *s);
-void	ft_putstr_fd(char *s, int fd);
+// int	ft_strcmp(const char *s1, const char *s2);
+// void	*ft_memcpy(void *dst, const void *src, size_t n);
+// char	*ft_strdup(const char *s1);
+// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+// char	*ft_substr(char const *s, unsigned int start, size_t len);
+// int	ft_strncmp(const char *s1, const char *s2, size_t n);
+// size_t	ft_strlen(const char *s);
+// void	ft_putstr_fd(char *s, int fd);
 void	to_exit(void);
 int	is_all_spaces(char *str);
 
