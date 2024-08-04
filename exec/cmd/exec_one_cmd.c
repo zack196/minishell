@@ -43,14 +43,13 @@ char	*get_cmd_path(t_env *sh_env, char *cmd)
 	return (NULL);
 }
 
-void	exec_cmd(t_env *sh_env, char *cmd)
+void	exec_cmd(t_env *sh_env, char **cmd)
 {
 	char	*path;
 	char	**env;
 	char	**cmd_arg;
 
-	path = get_cmd_path(sh_env, cmd);
+	path = get_cmd_path(sh_env, *cmd);
 	env = get_path_env(sh_env);
-	cmd_arg = ft_split(cmd, ' ');
-	execve(path, cmd_arg, env);
+	execve(path, cmd, env);
 }
