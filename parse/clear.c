@@ -37,8 +37,6 @@ void	ft_free_tab2(char **arr)
 	i = 0;
 	while (arr[i])
 	{
-		printf("[%p]\n", arr[i]);
-		printf("[%s]\n", arr[i]);
 		free(arr[i]);
 		i++;
 	}
