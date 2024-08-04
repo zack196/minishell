@@ -158,7 +158,10 @@ void	parse_cmd(t_token **token, t_cmd **cmd)
 		ft_lstdelone_t(tmp1);
 	}
 	if (!tmp)
-		return ;
+	{
+        ft_lstlast_cmd(*cmd)->pipe = 0;
+        return;
+    	}
 	*token = tmp->next;
 	fill_cmd(ft_lstlast_cmd(*cmd), tmp, &i);
 	ft_lstdelone_t(tmp);
