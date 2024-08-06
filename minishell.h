@@ -5,8 +5,9 @@
 # include <unistd.h> 
 # include <stdlib.h>
 # include <limits.h>
+# include <fcntl.h>
 # include "libft/libft.h"
-#include <sys/wait.h>
+# include <sys/wait.h>
 
 typedef struct s_cmd	t_cmd;
 typedef struct s_env

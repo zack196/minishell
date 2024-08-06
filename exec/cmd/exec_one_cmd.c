@@ -58,13 +58,13 @@ void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd)
 {
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 	{
-		perror("error pipe");
+		perror("error dup2");
 		my_malloc(2, 1); // free heap
 		exit(1);
 	}
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
 	{
-		perror("error pipe");
+		perror("error dup");
 		my_malloc(2, 1); // free heap
 		exit(1);
 	}
