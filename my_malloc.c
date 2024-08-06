@@ -28,7 +28,7 @@ void	*my_malloc(size_t size, int mode_free)
 	{
 		ptr = malloc(size);
 		if (!ptr)
-			return (my_free(&heap), exit(1), NULL);
+			return (ft_putstr_fd("no heap availavle!", 2), my_free(&heap), exit(1), NULL);
 		new = malloc(sizeof (t_heap));
 		if (!new)
 			return (my_free(&heap), exit(1), NULL);
@@ -40,5 +40,7 @@ void	*my_malloc(size_t size, int mode_free)
 		return (ptr);
 	}
 	else
-		return (my_free(&heap), exit(1), NULL);	
+		return (my_free(&heap), NULL);	
 }
+
+// code .

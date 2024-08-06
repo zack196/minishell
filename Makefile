@@ -23,8 +23,9 @@ SRC_LIBFT = ./libft/ft_strcmp.c	\
 			./libft/ft_strrchr.c
 
 SRC_EXEC = ./exec/init_env.c \
-		   ./exec/build_in/export.c	\
 		   ./exec/cmd/exec_one_cmd.c	\
+		   ./exec/cmd/exec.c	\
+		   ./exec/build_in/export.c	\
 		   ./exec/build_in/pwd.c	\
 		   ./exec/build_in/exit.c	\
 		   ./exec/build_in/echo.c	\

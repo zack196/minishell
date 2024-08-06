@@ -6,7 +6,9 @@
 # include <stdlib.h>
 # include <limits.h>
 # include "libft/libft.h"
+#include <sys/wait.h>
 
+typedef struct s_cmd	t_cmd;
 typedef struct s_env
 {
 	char			*line;
@@ -63,7 +65,7 @@ char	**ft_split(char const *s, char c);
 
 
 /*EXEC*/
-void	exec_cmd(t_env *sh_env, char *cmd);
-
-
+void	exec_cmd(t_env *sh_env, char **cmd);
+void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd);
+void	execution(t_env *sh_env, t_cmd *cmd);
 #endif
