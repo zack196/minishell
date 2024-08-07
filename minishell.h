@@ -18,6 +18,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+
 typedef struct s_minishell
 {
 	t_env	*env;

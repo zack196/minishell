@@ -42,5 +42,3 @@ void	*my_malloc(size_t size, int mode_free)
 	else
 		return (my_free(&heap), NULL);	
 }
-
-// code .

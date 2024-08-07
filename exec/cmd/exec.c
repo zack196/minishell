@@ -18,7 +18,8 @@ int	nbr_cmd(t_cmd *cmd)
 	return (count);
 }
 
-void	handel_red(t_cmd *cmd, int *fd_in, int fd_out)
+
+void	handel_red(t_cmd *cmd, int *fd_in, int *fd_out)
 {
 	t_redi	*red;
 
@@ -36,7 +37,23 @@ void	handel_red(t_cmd *cmd, int *fd_in, int fd_out)
 		if (red)
 			close(*fd_in);
 	}
-	fd_out++;
+	red = cmd->out;
+	while (red)
+	{
+		if (red->type == out)
+			*fd_out = open(red->file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		else if (red->type == append)
+			*fd_out = open(red->file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		if (*fd_out == -1)
+		{
+			perror(red->file);
+			my_malloc(2, 1); // free heap
+			exit(1);
+		}
+		red = red->next;
+		if (red)
+			close(*fd_out);
+	}
 }
 
 int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
@@ -44,6 +61,7 @@ int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
 	int		fd_pipe[2];
 	pid_t	pid;
 	int		fd_in;
+	int		fd_out;
 
 	if (pipe(fd_pipe))
 	{
@@ -61,10 +79,16 @@ int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
 	if (pid == 0)
 	{
 		close(fd_pipe[0]);
-		// handel_red(cmd, &fd_in, 3);
+		fd_in = STDIN_FILENO;
+		fd_out = fd_pipe[1];
+		handel_red(cmd, &fd_in, &fd_out);
 		if (cmd->next == NULL)
-			proc(STDIN_FILENO, STDOUT_FILENO, sh_env, cmd->cmd);
-		proc(STDIN_FILENO, fd_pipe[1], sh_env, cmd->cmd);
+		{
+			if (cmd->out)
+				proc(fd_in, fd_out, sh_env, cmd->cmd);
+			proc(fd_in, STDOUT_FILENO, sh_env, cmd->cmd);
+		}
+		proc(fd_in, fd_pipe[1], sh_env, cmd->cmd);
 	}
 	close(fd_pipe[1]);
 	if (!cmd->next)
@@ -74,33 +98,36 @@ int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
 	}
 	return(fd_pipe[0]);
 }
+
 int	exe_med_cmd(t_env *sh_env, t_cmd *cmd, int fd)
 {
 	int		fd_pipe[2];
 	pid_t	pid;
+	int 	fd_out;
 
 	pipe(fd_pipe);
 	pid = fork();
 	if (pid == 0)
 	{
 		close(fd_pipe[0]);
-		//handel red
-		proc(fd, fd_pipe[1], sh_env, cmd->cmd);
+		fd_out = fd_pipe[1];
+		handel_red(cmd, &fd, &fd_out);// how to check if fd is a file discriptor??
+		proc(fd, fd_out, sh_env, cmd->cmd);
 	}
-	close(fd_pipe[1]);
-	close(fd);
-	return (fd_pipe[0]);
+	return( close(fd_pipe[1]), close(fd), fd_pipe[0]);
 }
 
 void	exe_last_cmd(t_env *sh_env, t_cmd *cmd, int fd)
 {
 	pid_t	pid;
+	int 	fd_out;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		//handel red
-		proc(fd, STDOUT_FILENO, sh_env, cmd->cmd);
+		fd_out = STDOUT_FILENO;
+		handel_red(cmd, &fd, &fd_out);
+		proc(fd, fd_out, sh_env, cmd->cmd);
 	}
 	close(fd);
 }

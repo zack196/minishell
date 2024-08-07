@@ -58,7 +58,8 @@ void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd)
 {
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 	{
-		perror("error dup2");
+		ft_putstr_fd(*cmd, 2);
+		perror(" error dup2");
 		my_malloc(2, 1); // free heap
 		exit(1);
 	}
