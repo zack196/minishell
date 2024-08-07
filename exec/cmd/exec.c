@@ -17,21 +17,33 @@ int	nbr_cmd(t_cmd *cmd)
 	}
 	return (count);
 }
-int	handel_red_in(t_cmd *cmd)
+
+void	handel_red(t_cmd *cmd, int *fd_in, int fd_out)
 {
-	t_redi	*red_in;
-	int		fd_in;
+	t_redi	*red;
 
-	red_in = cmd->in;
-	// if (!red_in)
-		
-	// fd_in = open()
-
+	red = cmd->in;
+	while (red)
+	{
+		*fd_in = open(red->file, O_RDONLY , 0777);
+		if (*fd_in == -1)
+		{
+			perror(red->file);
+			my_malloc(2, 1); // free heap
+			exit(1);
+		}
+		red = red->next;
+		if (red)
+			close(*fd_in);
+	}
+	fd_out++;
 }
+
 int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
 {
 	int		fd_pipe[2];
 	pid_t	pid;
+	int		fd_in;
 
 	if (pipe(fd_pipe))
 	{
@@ -49,7 +61,7 @@ int	exe_1st_cmd(t_env *sh_env, t_cmd *cmd)
 	if (pid == 0)
 	{
 		close(fd_pipe[0]);
-		// handel_red_in(cmd);
+		// handel_red(cmd, &fd_in, 3);
 		if (cmd->next == NULL)
 			proc(STDIN_FILENO, STDOUT_FILENO, sh_env, cmd->cmd);
 		proc(STDIN_FILENO, fd_pipe[1], sh_env, cmd->cmd);
@@ -109,7 +121,8 @@ void	execution(t_env *sh_env, t_cmd *cmd)
 		fd = exe_med_cmd(sh_env, cmd, fd);
 		cmd = cmd->next;
 	}
-	exe_last_cmd(sh_env, cmd, fd);
+	if (cmd)
+		exe_last_cmd(sh_env, cmd, fd);
 	while (nbr_cmds--)
 		wait(NULL);
 }
