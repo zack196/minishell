@@ -53,9 +53,32 @@ void	exec_cmd(t_env *sh_env, char **cmd)
 	env = get_path_env(sh_env);
 	execve(path, cmd, env);
 }
-
+void	exec_build_in(t_env *sh_env, char **cmd, int *bool_build_in)
+{
+	if (!ft_strcmp(*cmd, "cd"))
+		cd(*(cmd + 1));
+	else if (!ft_strcmp(*cmd, echo))
+	{
+		if (!ft_strncmp(*(cmd + 1), "-n", 2))
+			echo(*(cmd + 1), 1);
+		else
+			echo(*(cmd + 1), 0);
+	}
+	else if (!ft_strcmp(*cmd, "env"))
+		print_env(sh_env, 0);
+	else if (!ft_strcmp(*cmd, exit))
+		env_exit(*(cmd + 1));
+	else if (!ft_strcmp(*cmd, "pwd"))
+		pwd();
+	else if (!ft_strcmp(*cmd, "unset"))
+		
+	
+}
 void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd)
 {
+	int	bool_build_in;
+
+	bool_build_in = 0;
 	if (dup2(fd_in, STDIN_FILENO) == -1)
 	{
 		ft_putstr_fd(*cmd, 2);
@@ -69,5 +92,6 @@ void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd)
 		my_malloc(2, 1); // free heap
 		exit(1);
 	}
+	exec_build_in(sh_env, cmd, &bool_build_in);
 	exec_cmd(sh_env, cmd);
 }

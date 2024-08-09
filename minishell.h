@@ -42,7 +42,6 @@ t_env	*new_element_env(char *line);
 
 /*BUILD_IN*/
 void    export(t_minishell *sh, char *line);
-void    unset(t_minishell *sh, char *var);
 void	print_env(t_env *env, int mode_export);
 void    _env(t_minishell *sh);
 void	_export(t_minishell *sh);
@@ -50,7 +49,7 @@ void    pwd(void);
 void    env_exit(char *exit_num);
 void	echo(char **argv, int flag_n);
 void    cd(const char *path);
-
+void    unset(t_env *env, char *var);
 /*Libft*/
 int	ft_atoi(const char *str);
 int		ft_isalnum(int c);
