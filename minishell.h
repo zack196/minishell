@@ -34,22 +34,22 @@ void	*my_malloc(size_t size, int mode_free);
 
 
 /*Env*/
-char	*get_var(char *line);
-char	*get_val(char *line, int *append);
-void	init_env(t_env **shell_env, char **env);
-void	add_env(t_env **env, t_env *new);
-t_env	*new_element_env(char *line);
+// char	*get_var(char *line);
+// char	*get_val(char *line, int *append);
+// void	init_env(t_env **shell_env, char **env);
+// void	add_env(t_env **env, t_env *new);
+// t_env	*new_element_env(char *line);
 
 /*BUILD_IN*/
-void    export(t_minishell *sh, char *line);
+void	export(t_env **envi, char *line);
+void	_export(t_env *env);
 void	print_env(t_env *env, int mode_export);
 void    _env(t_minishell *sh);
-void	_export(t_minishell *sh);
 void    pwd(void);
 void    env_exit(char *exit_num);
 void	echo(char **argv, int flag_n);
 void    cd(const char *path);
-void    unset(t_env *env, char *var);
+void    unset(t_env **env, char *var);
 /*Libft*/
 int	ft_atoi(const char *str);
 int		ft_isalnum(int c);
@@ -67,6 +67,6 @@ char	**ft_split(char const *s, char c);
 
 /*EXEC*/
 void	exec_cmd(t_env *sh_env, char **cmd);
-void	proc(int fd_in, int fd_out, t_env *sh_env, char **cmd);
-void	execution(t_env *sh_env, t_cmd *cmd);
+void	proc(int fd_in, int fd_out, t_env **sh_env, char **cmd);
+void	execution(t_env **sh_env, t_cmd *cmd);
 #endif
