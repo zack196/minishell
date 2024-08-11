@@ -54,19 +54,23 @@ enum
 	SPACEE,
 	SINGLE_EXP,
 };
-int	ft_strchr_2(const char *str, int c);
-// int	ft_strcmp(const char *s1, const char *s2);
-// void	*ft_memcpy(void *dst, const void *src, size_t n);
-// char	*ft_strdup(const char *s1);
-// size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-// char	*ft_substr(char const *s, unsigned int start, size_t len);
-// int	ft_strncmp(const char *s1, const char *s2, size_t n);
-// size_t	ft_strlen(const char *s);
-// void	ft_putstr_fd(char *s, int fd);
-void	to_exit(void);
-int	is_all_spaces(char *str);
 
-int	error_format(t_token *token, t_token *tmp, int i);
+typedef struct s_help 
+{ 
+	int i; 
+	int j; 
+	char *prev; 
+	char *str; //avant 
+	char *str1; //respo
+	char *last_str; //apres
+	char *join; 
+	//char *check_str; 
+}					t_help;
+
+int		ft_strchr_2(const char *str, int c);
+void	to_exit(void);
+int		is_all_spaces(char *str);
+int		error_format(t_token *token, t_token *tmp, int i);
 int	find_error(t_token *token, t_token *tmp);
 int	check_syntax(t_token *token);
 
@@ -114,4 +118,18 @@ void	set_cmd(t_cmd *cmd);
 void	ft_free_tab2(char **arr);
 void	clear_cmds(t_cmd **cmd);
 
+/*EXpand*/
+void	handler_expand(t_token **token, t_env *env, t_token *tok);
+void	check_exp(t_token *tok, t_env *env);
+void	hyphen_exp(t_token *tok, t_env *env);
+char	*get_value_of_exp(t_env *env, char *key);
+void	trim_quotes(t_token *token);
+int		join_str(t_token **token, t_token *tmp);
+
+void	expand_var(t_env *env, char **content);
+int	    count(char *str);
+void	ft_free_2(char *str1, char *str2, char *str3);
+int		exp_here(int curr, int next);
+int		must_expand(int next);
+void	check_tokens(t_token *token);
 #endif
