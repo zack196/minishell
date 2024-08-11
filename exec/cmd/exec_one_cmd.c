@@ -9,7 +9,7 @@ char	**get_path_env(t_env *sh_env)
 	i = 0;
 	while (sh_env)
 	{
-		if (!ft_strcmp(sh_env->var, "PATH="))
+		if (!ft_strcmp(sh_env->var, "PATH"))
 		{
 			env = ft_split(sh_env->val, ':');
 			while (env[i])
@@ -76,7 +76,10 @@ void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in)
 	else if (!ft_strcmp(*cmd, "export"))
 	{
 		if (!*(++cmd))
+		{
+			// printf("in\n");
 			_export(*sh_env);
+		}
 		else
 			while (*cmd)
 				export(sh_env, *(cmd++));

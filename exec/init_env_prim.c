@@ -7,7 +7,7 @@ char	*get_var_env(char *line)
 
 	i = 0;
 
-	while (line[i] != '\0' && line[i] != '=')//var=val
+	while (line[i] != '\0' && line[i] != '=' && line[i] != '+')//var=val
 		i++;
 	var = my_malloc((i + 1) * sizeof (char), 0);
 	var[i--] = '\0';
@@ -95,15 +95,3 @@ void	init_env(t_env **sh_env, char **env)
 		i++;
 	}
 }
-
-// int main(int ac, char **av, char **env)
-// {
-//     t_env	*sh_env;
-
-// 	init_env(&sh_env, env);
-// 	while (sh_env)
-// 	{
-// 		printf("%s\n", sh_env->line);
-// 		sh_env = sh_env->next;
-// 	}
-// }
