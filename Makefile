@@ -30,7 +30,6 @@ SRC_EXEC = ./exec/init_env.c \
 		   ./exec/build_in/exit.c	\
 		   ./exec/build_in/echo.c	\
 		   ./exec/build_in/cd.c	\
-		   ./exec/build_in/env.c \
 		   ./exec/build_in/unset.c
 
 SRC_PARS = ./parse/aide.c \
