@@ -57,7 +57,7 @@ void	exec_cmd(t_env *sh_env, char **cmd)
 void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in)
 {
 	if (!ft_strcmp(*cmd, "cd"))
-		cd(*(cmd + 1));
+		return ;
 	else if (!ft_strcmp(*cmd, "echo"))
 	{
 		if (!ft_strncmp(*(cmd + 1), "-n", 2))
@@ -76,10 +76,7 @@ void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in)
 	else if (!ft_strcmp(*cmd, "export"))
 	{
 		if (!*(++cmd))
-		{
-			// printf("in\n");
 			_export(*sh_env);
-		}
 		else
 			while (*cmd)
 				export(sh_env, *(cmd++));
@@ -107,6 +104,9 @@ void	proc(int fd_in, int fd_out, t_env **sh_env, char **cmd)
 		exit(1);
 	}
 	exec_build_in(sh_env, cmd, &bool_build_in);
+	if (bool_build_in)
+		return (my_malloc(9, 1), exit(0));
 	if (!bool_build_in)
 		exec_cmd(*sh_env, cmd);
 }
+

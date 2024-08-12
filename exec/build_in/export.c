@@ -21,8 +21,33 @@ void	export(t_env **envi, char *line)
 		env->val = ft_strjoin(env->val, get_val_env(line));
 		env->line = ft_strjoin(env->var, ft_strjoin("=", env->val));
 	}
+	else if (env && !append_mode && !get_val_env(line))
+		return ;
+	else if (env && !append_mode && get_val_env(line))
+	{
+		env->val = get_val_env(line);
+		env->line = ft_strjoin(env->var, ft_strjoin("=", env->val));
+	}
 	else
 		add_env(envi, new_element_env(line));
+}
+
+t_env	*line_clone(char *var, char *val)
+{
+	t_env	*new;
+
+	new = my_malloc(sizeof (t_env), 0);
+	new->next = NULL;
+	new->var = ft_strdup(var);
+	new->val = NULL;
+	if (val)
+	{
+		new->val = ft_strdup(val);
+		new->line = ft_strjoin(new->var, ft_strjoin("=", ft_strjoin("\"", ft_strjoin(new->val, "\""))));
+		return (new);
+	}
+	new->line = new->var;
+	return (new);
 }
 
 t_env	*cpy_env(t_env *env)
@@ -33,12 +58,7 @@ t_env	*cpy_env(t_env *env)
 	cpy = NULL;
 	while (env)
 	{
-		new = my_malloc(sizeof (t_env), 0);
-		new->var = ft_strdup(env->var);
-		new->val = ft_strdup(env->val);
-		if (!new->val)		
-			new->line = ft_strjoin(new->var, new->val);
-		printf("%s\n", new->line);
+		new = line_clone(env->var, env->val);
 		add_env(&cpy, new);
 		env = env->next;
 	}
@@ -65,14 +85,13 @@ void	_export(t_env *env)
 	char	*line;
 
 	cpy = cpy_env(env);
-	printf("%s\n",cpy->line);
 	while (1)
 	{
 		bool_swap = 0;
 		begin = cpy;
 		while (begin->next)
 		{
-			if (ft_strcmp(begin->line, begin->next->line) < 0)
+			if (ft_strcmp(begin->line, begin->next->line) <= 0)
 			{
 				line = begin->line;
 				begin->line = begin->next->line;

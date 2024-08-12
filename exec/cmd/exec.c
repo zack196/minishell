@@ -132,6 +132,8 @@ void	execution(t_env **sh_env, t_cmd *cmd)
 	pid_t pid;
 
 	nbr_cmds = nbr_cmd(cmd);
+	if (nbr_cmds == 1 && !ft_strcmp(*(cmd->cmd), "cd"))
+		cd(*(cmd->cmd + 1), sh_env);;// 
 	fd = exe_1st_cmd(*sh_env, cmd);
 	cmd = cmd->next;
 	while (cmd && cmd->pipe)
