@@ -89,6 +89,7 @@ void	init_env(t_env **sh_env, char **env)
 	int	i;
 
 	i = 0;
+	add_env(sh_env, new_element_env("OLDPWD"));
 	while (env[i])
 	{
 		add_env(sh_env, new_element_env(env[i]));

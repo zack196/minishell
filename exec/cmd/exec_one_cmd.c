@@ -57,7 +57,7 @@ void	exec_cmd(t_env *sh_env, char **cmd)
 void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in)
 {
 	if (!ft_strcmp(*cmd, "cd"))
-		return ;
+		cd(*(cmd + 1), sh_env);
 	else if (!ft_strcmp(*cmd, "echo"))
 	{
 		if (!ft_strncmp(*(cmd + 1), "-n", 2))
@@ -72,7 +72,8 @@ void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in)
 	else if (!ft_strcmp(*cmd, "pwd"))
 		pwd();
 	else if (!ft_strcmp(*cmd, "unset"))
-		unset(sh_env, *(cmd + 1));
+		while (*(++cmd))
+			unset(sh_env, *(cmd));
 	else if (!ft_strcmp(*cmd, "export"))
 	{
 		if (!*(++cmd))

@@ -8,7 +8,7 @@ void	export(t_env **envi, char *line)
 
 	env = *envi;
 	append_mode = 0;
-	if (ft_strrchr(line, '+'))
+	if (ft_strrchr(line, '+'))//hadi ta tsawbha mzn case var=val1+val2    matalan!!
 		append_mode = 1;
 	while (env)
 	{

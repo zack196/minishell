@@ -124,7 +124,6 @@ int	main(int ac, char **av, char **env)
 			ft_minishell(&dup_env, &token, &cmd);
 			// get_input(cmd);// a annuler
 			execution(&dup_env, cmd);
-			// exec_cmd(dup_env, cmd->cmd[0]);
 			clear_cmds(&cmd);
 		}
 		free(line);

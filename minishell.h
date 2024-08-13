@@ -10,6 +10,7 @@
 # include <sys/wait.h>
 
 typedef struct s_cmd	t_cmd;
+typedef struct s_redi	t_redi;
 typedef struct s_env
 {
 	char			*line;
@@ -26,7 +27,7 @@ typedef	struct	s_heap
 }	t_heap;
 
 void	*my_malloc(size_t size, int mode_free);
-
+void    error(char *msg_err);
 
 /*Env*/
 char	*get_var_env(char *line);
@@ -44,23 +45,25 @@ void    pwd(void);
 void    env_exit(char *exit_num);
 void	echo(char **argv, int flag_n);
 void    unset(t_env **env, char *var);
+void	exec_build_in(t_env **sh_env, char **cmd, int *bool_build_in);
+
 /*Libft*/
-int	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 int		ft_isalnum(int c);
 int		ft_isdigit(int c);
 int		ft_isalpha(int c);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s1);
-int ft_strcmp(char *s1, char *s2);
+int 	ft_strcmp(char *s1, char *s2);
 char	*ft_strrchr(const char *s, int c);
-int ft_strncmp(char *s1, char *s2, int n);
+int 	ft_strncmp(char *s1, char *s2, int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 
-
 /*EXEC*/
-void	exec_cmd(t_env *sh_env, char **cmd);
+
 void	proc(int fd_in, int fd_out, t_env **sh_env, char **cmd);
 void	execution(t_env **sh_env, t_cmd *cmd);
+void	handel_red(t_cmd *cmd, int *fd_in, int *fd_out);
 #endif

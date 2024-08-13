@@ -6,6 +6,7 @@ void    unset(t_env **envi, char *var)
 	t_env   *unset_node;
 
 	// test if var is a valid variable //TODO
+	
 	if (!ft_strcmp(var, (*envi)->var))
 	{
 		unset_node = *envi;
