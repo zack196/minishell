@@ -58,7 +58,6 @@ t_env   *new_element_env(char *line)
 		ft_putstr_fd(line, 2);
 		ft_putstr_fd("\': not a valid identifier\n", 2);
 		my_malloc(1, 1);
-		exit(1);	
 	}
     new->val = get_val_env(line);
     if (!new->val)
@@ -90,8 +89,17 @@ void	init_env(t_env **sh_env, char **env)
 
 	i = 0;
 	add_env(sh_env, new_element_env("OLDPWD"));
+	if (!env[0])
+	{
+		(*sh_env)->is_min = 1;
+		add_env(sh_env, new_element_env("PWD=/Users/zel-oirg/Desktop/minishell"));
+		add_env(sh_env, new_element_env("SHLVL=1"));
+		return ;
+	}
+	print_env(*sh_env, 0);
 	while (env[i])
 	{
+		(*sh_env)->is_min = 0;
 		add_env(sh_env, new_element_env(env[i]));
 		i++;
 	}

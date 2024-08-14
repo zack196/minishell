@@ -1,5 +1,18 @@
 #include "../../minishell.h"
 
+int		check_export(char *line, int *append)
+{
+	if (*line && !ft_isalpha(*line))
+		return (0);
+	line++;
+	while (*line && ft_isalnum(*line) && *line != '_' && *line != '+' && *line != '=')
+		line++;
+	if (*line == '+' && *(line + 1) != '=')
+		return (0);
+	else if (*line == '+' && *(line + 1) == '=')
+		*append = 1;
+	return (1);
+}
 
 void	export(t_env **envi, char *line)
 {
@@ -8,8 +21,13 @@ void	export(t_env **envi, char *line)
 
 	env = *envi;
 	append_mode = 0;
-	if (ft_strrchr(line, '+'))//hadi ta tsawbha mzn case var=val1+val2    matalan!!
-		append_mode = 1;
+	if (!check_export(line, &append_mode))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(line, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return ;
+	}
 	while (env)
 	{
 		if (!ft_strcmp(env->var, get_var_env(line)))

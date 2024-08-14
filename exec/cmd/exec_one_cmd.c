@@ -1,25 +1,29 @@
 #include "../../minishell.h"
 
+//if there is no env
+
 char	**get_path_env(t_env *sh_env)
 {
 	char	**env;
 	int		i;
 
 	env = NULL;
-	i = 0;
+	if (sh_env->is_min)
+		env = ft_split("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", ':');
 	while (sh_env)
 	{
 		if (!ft_strcmp(sh_env->var, "PATH"))
 		{
 			env = ft_split(sh_env->val, ':');
-			while (env[i])
-			{
-				env[i] = ft_strjoin(env[i], "/");
-				i++;
-			}
 			break ;
 		}
 		sh_env = sh_env->next;
+	}
+	i = 0;
+	while (env[i])
+	{
+		env[i] = ft_strjoin(env[i], "/");
+		i++;
 	}
 	return (env);
 }
@@ -40,6 +44,9 @@ char	*get_cmd_path(t_env *sh_env, char *cmd)
 		if (!access(ret, F_OK))
 			return (ret);
 	}
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
 	return (NULL);
 }
 

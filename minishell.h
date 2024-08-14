@@ -16,6 +16,7 @@ typedef struct s_env
 	char			*line;
 	char			*var;
 	char			*val;
+	int				is_min;
 	struct s_env	*next;
 }	t_env;
 

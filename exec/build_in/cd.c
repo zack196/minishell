@@ -8,7 +8,7 @@ void	cd(const char *path, t_env **sh_env)
 	if (chdir(path) == -1)
 	{
 		perror("minishell: cd");
-		// exit(1);
+		return ;
 	}
 	env = *sh_env;
 	old_path = "";

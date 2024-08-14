@@ -84,8 +84,6 @@ void	execution(t_env **sh_env, t_cmd *cmd)
 	int	nbr_cmds;
 	int	fd;
 	int	bool_build_in;
-	int	i;
-	pid_t pid;
 
 	nbr_cmds = nbr_cmd(cmd);
 	bool_build_in = 1;
