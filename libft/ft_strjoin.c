@@ -1,36 +1,33 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:56:11 by zel-oirg          #+#    #+#             */
-/*   Updated: 2023/11/30 00:27:15 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "libft.h"
 
-#include "../minishell.h"
-
-char	*ft_strjoin(char const *s1, char const *s2)
+static	char	*ft_free(char *p)
 {
-	char	*res;
-	int		i;
+	free(p);
+	return (NULL);
+}
 
-	if (!s1 || !s2)
+char	*ft_strjoin(char *old_str, char *current_str)
+{
+	size_t		arr[2];
+	char		*new_str;
+
+	if (!old_str)
+		old_str = ft_strdup("\0");
+	if (!current_str)
+		return (old_str);
+	if (!old_str || !current_str)
+		return (ft_free(old_str));
+	new_str = malloc(ft_strlen(old_str) + ft_strlen(current_str) + 1);
+	if (!new_str)
 		return (NULL);
-	res = (char *)my_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 0);
-	i = 0;
-	while (s1[i])
-	{
-		res[i] = s1[i];
-		i++;
-	}
-	while (s2[i - ft_strlen(s1)])
-	{
-		res[i] = s2[i - ft_strlen(s1)];
-		i++;
-	}
-	res[i] = 0;
-	return (res);
+	arr[0] = -1;
+	if (old_str)
+		while (old_str[++arr[0]] != '\0')
+			new_str[arr[0]] = old_str[arr[0]];
+	arr[1] = 0;
+	while (current_str[arr[1]] != '\0')
+		new_str[arr[0]++] = current_str[arr[1]++];
+	new_str[ft_strlen(old_str) + ft_strlen(current_str)] = '\0';
+	free(old_str);
+	return (new_str);
 }

@@ -1,101 +1,92 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/05 17:10:22 by zel-oirg          #+#    #+#             */
-/*   Updated: 2023/12/01 00:34:16 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "libft.h"
 
-#include "../minishell.h"
-
-static int	num_word(char const *s, char c)
+static int	wd_count(const char *s, char c)
 {
 	int	i;
+	int	k;
 
 	i = 0;
-	if (!s)
-		return (0);
-	while (*s)
+	k = 0;
+	while (s[i])
 	{
-		if (*s == c)
-			s++;
+		if (s[i] == c)
+			i++;
 		else
 		{
-			i++;
-			while (*s && *s != c)
-				s++;
+			k++;
+			while (s[i] && s[i] != c)
+				i++;
 		}
 	}
-	return (i);
+	if (k)
+		return (k);
+	return (1);
 }
 
-static int	word(char const *s, char c)
+static void	ft_inc(const char *s, int *arr0, int *arr1, char c)
+{
+	while (s[*arr0] && s[*arr0] != c)
+	{
+		*arr0 += 1;
+		*arr1 += 1;
+	}
+}
+
+static char	**ft_free_tab(char **arr)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
+	while (arr[++i])
+	{
+		free(arr[i]);
+		arr[i] = NULL;
+	}
+	free(arr);
+	arr = NULL;
+	return (NULL);
+}
+
+char	**ft_split(char  *s, char c)
+{
+	char	**aldynamic;
+	int		arr[4];
+
 	if (!s)
 		return (0);
-	while (*s && *s != c)
-	{
-		i++;
-		s++;
-	}
-	return (i);
-}
-
-static void	free_mal(char **res, int i)
-{
-	while (i >= 0)
-	{
-		free(res[i]);
-		res[i--] = NULL;
-	}
-	free(res);
-	res = NULL;
-}
-
-static char	*extract(char const *s, char c)
-{
-	int		c_word;
-	char	*res;
-
-	if (!s)
+	arr[0] = 0;
+	arr[3] = 0;
+	aldynamic = ft_calloc((wd_count(s, c) + 1), sizeof(char *));
+	if (!aldynamic)
 		return (NULL);
-	c_word = word(s, c);
-	res = ft_substr(s, 0, c_word);
-	return (res);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**res;
-	int		nbr_word;
-	int		i;
-
-	nbr_word = num_word(s, c);
-	i = 0;
-	if (!s)
-		return (NULL);
-	res = (char **)my_malloc((nbr_word + 1) * sizeof(char **), 0);
-	while (i < nbr_word)
+	while (s[arr[0]])
 	{
-		while (*s == c)
-			s++;
-		res[i] = extract(s, c);
-		if (res[i] == NULL)
+		if (s[arr[0]] == c)
+			arr[0]++;
+		else
 		{
-			free_mal(res, i);
-			return (0);
+			arr[2] = arr[0];
+			arr[1] = 0;
+			ft_inc(s, &arr[0], &arr[1], c);
+			aldynamic[arr[3]] = ft_substr(s, arr[2], arr[1]);
+			if (!(aldynamic[(arr[3])++]))
+				return (ft_free_tab(aldynamic));
 		}
-		i++;
-		while (*s && *s != c)
-			s++;
 	}
-	res[i] = NULL;
-	return (res);
+	return (aldynamic);
 }
+
+//int main()
+//{
+// 	printf("g\n");
+// 	while (malloc(1024LL * 1024 * 1024))
+// 		;
+// 	printf("failed\n");
+// 	while (malloc(100000))
+// 		;
+// 	printf("failed\n");
+// 	while (malloc(1))
+// 		;
+// 	printf("hello\n");
+// 	ft_split("ab", 'b');
+//}

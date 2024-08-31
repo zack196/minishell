@@ -1,35 +1,24 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:35:05 by zel-oirg          #+#    #+#             */
-/*   Updated: 2023/11/29 23:47:37 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../minishell.h"
+#include "libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	size_t	i;
-	char	*res;
+	char	*str;
+	char	*dup;
 
-	i = 0;
-	if (!s)
+	str = (char *)s;
+	if (!str)
 		return (NULL);
-	if (ft_strlen(s) == 0 || start > ft_strlen(s))
-		len = 0;
-	if (len > ft_strlen (s) - start)
-		len = ft_strlen(s) - start ;
-	res = (char *)my_malloc(len + 1, 0);
-	while (i < len && s[start + i])
+	if (start > ft_strlen(str))
+		return (ft_strdup(""));
+	if (len > ft_strlen(str + start))
 	{
-		res[i] = s[start + i];
-		i++;
+		dup = malloc(ft_strlen(str + start) + 1);
+		len = ft_strlen(str + start);
 	}
-	res[i] = 0;
-	return (res);
+	else
+		dup = malloc(len + 1);
+	if (!dup)
+		return (NULL);
+	ft_strlcpy(dup, str + start, len + 1);
+	return (dup);
 }

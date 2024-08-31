@@ -1,26 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 18:15:19 by zel-oirg          #+#    #+#             */
-/*   Updated: 2023/11/06 20:51:51 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "libft.h"
 
-#include "../minishell.h"
-
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
 	i = 0;
-	while (*str)
-	{
-		str++;
+	if (!s || !*s)
+		return (0);
+	while (s[i])
 		i++;
-	}
 	return (i);
 }

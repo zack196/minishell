@@ -1,33 +1,19 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <zel-oirg@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/31 15:52:12 by zel-oirg          #+#    #+#             */
-/*   Updated: 2024/08/03 21:57:10 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "libft.h"
 
-#include "../minishell.h"
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	unsigned char	*dst;
-	unsigned char	*sr;
+	unsigned char	*d;
+	unsigned char	*s;
 
-	dst = (unsigned char *)dest;
-	sr = (unsigned char *)src;
-	if (!dest && !src)
+	s = (unsigned char *)src;
+	d = (unsigned char *)dst;
+	if (d == NULL && s == NULL)
 		return (NULL);
-	if (dest == src)
-		return (dest);
+	if (dst == src)
+		return (dst);
 	while (n--)
 	{
-		*dst = *sr;
-		dst++;
-		sr++;
+		*d++ = *s++;
 	}
-	return (dest);
+	return (dst);
 }

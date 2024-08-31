@@ -1,62 +1,52 @@
 NAME = minishell
 
-CC = cc 
-CFLAG = #-Wall -Wextra -Werror  -g
+LIBFT_DIR = libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = ./main.c	\
-	  ./my_malloc.c
+LDFLAGS     = -L/Users/$(USER)/.brew/opt/readline/lib
+CPPFLAGS    = -I/Users/$(USER)/.brew/opt/readline/include
 
-SRC_LIBFT = ./libft/ft_strcmp.c	\
-			./libft/ft_strncmp.c	\
-			./libft/ft_strdup.c	\
-			./libft/ft_atoi.c	\
-			./libft/ft_split.c	\
-			./libft/ft_memcpy.c	\
-			./libft/ft_putstr_fd.c	\
-			./libft/ft_strlcpy.c	\
-			./libft/ft_substr.c	\
-			./libft/ft_isdigit.c	\
-			./libft/ft_strjoin.c	\
-			./libft/ft_strlen.c	\
-			./libft/ft_isalpha.c	\
-			./libft/ft_isalnum.c	\
-			./libft/ft_strrchr.c
+CFLAGS = -Wall -Wextra -Werror 
+CC = cc
 
-SRC_EXEC = ./exec/init_env.c \
-		   ./exec/cmd/exec_one_cmd.c	\
-		   ./exec/cmd/exec.c	\
-		   ./exec/cmd/heredoc.c	\
-		   ./exec/build_in/export.c	\
-		   ./exec/build_in/pwd.c	\
-		   ./exec/build_in/exit.c	\
-		   ./exec/build_in/echo.c	\
-		   ./exec/build_in/cd.c	\
-		   ./exec/build_in/unset.c
+F_LFT = -L$(LIBFT_DIR) -lft
+INC = -I$(LIBFT_DIR)
 
-SRC_PARS = ./parse/aide.c \
-		   ./parse/checksyntaxe.c \
-		   ./parse/clear.c \
-		   ./parse/list.c \
-		   ./parse/remove.c \
-		   ./parse/parse.c \
-		   ./parse/token.c 
+INCLUDE = includes/parse.h
 
-OBJ = $(SRC:.c=.o) \
-	  $(SRC_EXEC:.c=.o) \
-	  $(SRC_PARS:.c=.o) \
-	  $(SRC_LIBFT:.c=.o)
+SRC = main.c signals.c src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
+	 src/tools/lst_env.c src/envir/environment.c src/expand/expansion.c src/tools/free_envi.c \
+	 src/expand/expansion2.c src/expand/expansion3.c  \
+	 src/lexer/checks.c src/parse/parsing.c src/parse/parsing2.c src/tools/lst_redir.c \
+	 src/tools/lst_cmd.c \
+	 src/exec/exe_cmd.c src/exec/exec.c src/exec/handel_pipe.c src/exec/handel_redi.c src/exec/build_in_exec.c src/exec/handel_heredoc.c src/exec/expand_helper.c \
+	 src/build_in/echo.c src/build_in/unset.c src/build_in/env.c src/build_in/export.c src/build_in/cd.c src/build_in/pwd.c src/build_in/exit.c
 
-all:$(NAME)
 
-%.o:%.c minishell.h
-	$(CC) $(CFLAG) -c $< -o $@
+OBJ = $(SRC:.c=.o)
 
-$(NAME):$(OBJ)
-	$(CC) $(CFLAG) $(OBJ) -lreadline -lncurses -o $(NAME)
+all: $(NAME)
 
-clean :
-	rm -f $(OBJ)
-fclean : clean
-	rm -f $(NAME)
+$(LIBFT): 
+	$(MAKE) -C $(LIBFT_DIR)
 
-re : fclean all
+
+$(OBJ): $(INCLUDE)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) $(OBJ) $(F_LFT) -lreadline $(CPPFLAGS) $(LDFLAGS) -o $(NAME)
+
+clean:
+	@make clean -C $(LIBFT_DIR)
+	@rm -f $(OBJ) $(OBJ_B)
+
+fclean: clean
+	@make fclean -C $(LIBFT_DIR)
+	@rm -f $(NAME) $(NAME_BONUS)
+
+re: fclean all
+
+.PHONY: all bonus clean fclean re $(LIBFT)

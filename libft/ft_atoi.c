@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <zel-oirg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 01:00:59 by zel-oirg          #+#    #+#             */
-/*   Updated: 2024/07/28 12:25:24 by zel-oirg         ###   ########.fr       */
+/*   Updated: 2023/11/30 22:14:20 by zel-oirg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "libft.h"
 
 static char	*space_sign(const char *str, int *i)
 {
@@ -50,6 +50,8 @@ int	ft_atoi(const char *str)
 	}
 	if (r <= 9223372036854775807 && (*str < '0' || *str > '9'))
 		return ((int)r * sign);
+	else if (sign == 1)
+		return (-1);
 	else
-		return (printf("bash: exit: %s: numeric argument required\n", str), exit(255), -1);
+		return (0);
 }

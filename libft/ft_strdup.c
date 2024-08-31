@@ -1,30 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: zel-oirg <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/03 15:03:41 by zel-oirg          #+#    #+#             */
-/*   Updated: 2023/11/05 20:29:30 by zel-oirg         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../minishell.h"
+#include "libft.h"
 
 char	*ft_strdup(const char *s1)
 {
-	char	*res;
-	int		i;
+	char	*str;
 
-	res = (char *)my_malloc(ft_strlen(s1) + 1, 0);
-	i = 0;
-	while (*s1)
+	if(!s1)
 	{
-		res[i] = *s1;
-		s1++;
-		i++;
+		str = malloc(sizeof(char) * 1);
+		str[0] = 0;
+		return (str);
 	}
-	res[i] = '\0';
-	return (res);
+	str = (char *)malloc(ft_strlen(s1) + 1);
+	if (!str)
+		return (NULL);
+	ft_memcpy(str, s1, ft_strlen(s1) + 1);
+	return (str);
 }
