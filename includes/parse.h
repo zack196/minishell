@@ -190,7 +190,8 @@ int 				check_var(char *var, char *fct, t_envi **envi);
 char    			**split_space(char **ptr);
 t_envi				*find_node(t_envi *envi, char *key);
 void    			set_exit_status(int status, t_envi **envi);
-void	set_signals(void);
+void	set_signals(t_envi *dup_env);
 void	set_default(void);
-
+void	set_herdoc(void);
+void	sig_quit_handler(int s);
 #endif
