@@ -6,7 +6,7 @@
 /*   By: zel-oirg <zel-oirg@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 22:09:38 by zel-oirg          #+#    #+#             */
-/*   Updated: 2024/08/31 05:04:06 by zel-oirg         ###   ########.fr       */
+/*   Updated: 2024/08/31 18:32:57 by zel-oirg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int    _exit_(char **av, t_envi **envi)
         return (set_exit_status(0, envi), exit(0), 0);
     else if (nbr_arg(av) >= 2)
         return (ft_putstr_fd("minishell: exit: too many arguments\n", 2)
-            , set_exit_status(1, envi), exit(1),1);
+            , set_exit_status(1, envi), 1);
     else
     {
         if (check_arg(*av, envi))

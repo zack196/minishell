@@ -1,8 +1,25 @@
 #include "../../includes/parse.h"
 
+static int count_consecutive_dollars(const char *str) {
+    int count = 0;
+    while (*str) {
+		if((*str == '$'))
+		{
+			str++;
+            count++;
+			continue ;
+		}
+		if (count)
+			break ;
+        str++;
+    }
+    return count;
+}
+
 void	check_exp(t_token *tok, t_envi *env)
 {
 	(void)env;
+	int dollar_count ;
 	if (tok->type == HYPHEN)
 	{
 		hyphen_exp(tok, env);
@@ -14,7 +31,9 @@ void	check_exp(t_token *tok, t_envi *env)
 	{
 		if (*(tok->content) == '$')
 			tok->expand = 1;
-		expand_var(env, &tok->content);
+		dollar_count = count_consecutive_dollars(tok->content);
+        if (dollar_count % 2 == 1) 
+            expand_var(env, &tok->content);
 	}
 }
 
@@ -70,20 +89,7 @@ int	join_str(t_token **token, t_token *tmp)
 		return (1);
 	}
 }
-// static void    check_tokens(t_token *token)
-// {
-//     t_token    *tmp;
 
-//     tmp = token;
-//     printf("--------CHECK_TOKENS-----------\n");
-//     while (tmp)
-//     {
-//         printf("content = %s\n", tmp->content);
-//         printf("type    = %d\n", tmp->type);
-//         tmp = tmp->next;
-//     }
-//     printf("----------------------------\n");
-// }
 void	handler_expand(t_token **token, t_envi *env, t_token *tok)
 {
 	t_token	*tmp;
@@ -91,12 +97,12 @@ void	handler_expand(t_token **token, t_envi *env, t_token *tok)
 	(void)env;
 	(void)token;
 	tmp = NULL;
+
 	trim_quotes(*token);
 	here_doc_exp(*token);
 	while (tok)
 	{
 		check_exp(tok, env);
-		// check_tokens(tok);
 		if (join_str(&tok, tmp) == 0)
 		{
 			tmp = tok;

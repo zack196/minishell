@@ -175,6 +175,8 @@ int 				is_build(char *cmd);
 void				build_in_exe(t_cmd *cmd, t_envi **env, char **files);
 int					build_in(char **cmd, t_envi **env);
 char				**creat_heredoc(t_cmd *cmd, t_envi *envi);
+char	**exec_expand(char **cmd);
+char	**remove_empty_string(char **ptr);
 /*-----build in-------*/
 int    echo(char **av, t_envi **envi);
 int	    			unset(char **av, t_envi **envi);

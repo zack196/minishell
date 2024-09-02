@@ -31,7 +31,7 @@ void	remove_spaces(t_token **token, t_token *tok)
 
 void	ft_minishell(t_envi **env, t_token **token, t_cmd **cmd)
 {
-	handler_expand(token, *env, *token);
+	handler_expand(token, *env, *token);//
 	remove_spaces(token, *token);
 	if (check_syntax(*token))
 		parse_cmd(token, cmd, env);
@@ -50,11 +50,6 @@ void	main_loop(t_token *token, t_envi *dup_env, t_cmd *cmd)
 		line = readline("minishell> ");
 		if (!line)
 			exit(1);
-		if (is_all_spaces(line))
-		{
-			free(line);
-			continue ;
-		}
 		add_history(line);
 		if (token_line(line, &token))
 		{

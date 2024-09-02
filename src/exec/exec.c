@@ -5,6 +5,8 @@ int	count_cmd(t_cmd *cmd)
 	int	i;
 
 	i = 0;
+	if (!cmd->cmd)
+		return (0);
 	while (cmd)
 	{
 		i++;
@@ -31,12 +33,12 @@ void	add_last_argument_to_env(char **cmd, t_envi **envi)
 		{
 			free(node->value);
 			node->value = ft_strdup(last);
-			free(env_var);
-			return;
+			return (free(env_var));
 		}
 		node = node->next;
 	}
-	ft_lstadd_back_env(envi, ft_lstnew_env(ft_strdup("_"), ft_strdup(last), 0));
+	if (!*envi)
+		ft_lstadd_back_env(envi, ft_lstnew_env(ft_strdup("_"), ft_strdup(last), 0));
 	free(env_var);
 }
 
@@ -45,7 +47,7 @@ void	clean_heredoc(char **heredoc)
 	int	i;
 
 	i = -1;
-	while (heredoc[++i])
+	while (heredoc && heredoc[++i])
 	{
 		unlink(heredoc[i]);
 		free(heredoc[i]);
@@ -74,17 +76,18 @@ void	_exec(t_cmd *cmd, t_envi **envi)
 
 	nbr_cmd = count_cmd(cmd);
 	heredoc_files = creat_heredoc(cmd, *envi);
-	if (nbr_cmd == 1 && cmd && cmd->cmd)
+	if (heredoc_files && nbr_cmd == 1 && cmd && cmd->cmd)
 		add_last_argument_to_env(cmd->cmd, envi);
-	if (cmd && !(cmd->err))
+	if (heredoc_files && cmd && !(cmd->err))
 	{
 		fd = STDIN_FILENO;
-		if (cmd->cmd && nbr_cmd == 1 && is_build(*(cmd->cmd)) )
+		if (cmd->cmd && nbr_cmd == 1 && is_build(*(cmd->cmd)))
 		{
 			build_in_exe(cmd, envi, heredoc_files);
 			cmd = cmd->next;
 			return (clean_heredoc(heredoc_files), free(heredoc_files));
 		}
+		//child_process 
 		piping(cmd, fd, envi, heredoc_files);
 		ft_wait(nbr_cmd, envi);
 	}

@@ -34,10 +34,14 @@ int    echo(char **av, t_envi **envi)
     i = 0;
     if (av[i] && check_n(av[i]))
     {
-        while (check_n(av[i]))
+        while (av[i] && check_n(av[i]))
             i++;
         while (av[i])
+        {
             ft_putstr(av[i++]);
+            if (av[i])
+                write(1, " ", 1);
+        }
     }
     else
     {

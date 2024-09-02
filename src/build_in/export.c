@@ -30,12 +30,16 @@ void	export_node(t_envi **envi, char *key, char *value, int append)
 	if (!ptr)
 		return (ft_lstadd_back_env(envi, ft_lstnew_env(key, value, 0)));
 	if (append == 1)
+	{
 		ptr->value = ft_strjoin(ptr->value, value);
+		free(value);
+	}
 	else if (value)
 	{
 		free(ptr->value);
 		ptr->value = value;
 	}
+	free(key);
 }
 
 int	_export(char *line, t_envi **envi)

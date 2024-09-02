@@ -6,7 +6,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 LDFLAGS     = -L/Users/$(USER)/.brew/opt/readline/lib
 CPPFLAGS    = -I/Users/$(USER)/.brew/opt/readline/include
 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror  
 CC = cc
 
 F_LFT = -L$(LIBFT_DIR) -lft
@@ -30,14 +30,13 @@ all: $(NAME)
 $(LIBFT): 
 	$(MAKE) -C $(LIBFT_DIR)
 
-
 $(OBJ): $(INCLUDE)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(OBJ) $(F_LFT) -lreadline $(CPPFLAGS) $(LDFLAGS) -o $(NAME)
+	$(CC) $(OBJ) $(F_LFT) -lreadline  $(CPPFLAGS) $(LDFLAGS) -o $(NAME)
 
 clean:
 	@make clean -C $(LIBFT_DIR)
@@ -45,7 +44,7 @@ clean:
 
 fclean: clean
 	@make fclean -C $(LIBFT_DIR)
-	@rm -f $(NAME) $(NAME_BONUS)
+	@rm -f $(NAME)
 
 re: fclean all
 

@@ -19,23 +19,39 @@ int is_build(char *cmd)
 	else
 		return (0);
 }
+void    retrive_space(char **av)
+{
+    int i;
+    int j;
+
+    i = -1;
+    while (av[++i])
+    {
+        j = -1;
+        while (av[i][++j])
+            if (av[i][j] == 127)
+                av[i][j] = ' ';
+    }
+}
 
 int	build_in(char **cmd, t_envi **envi)
 {
-	if (!ft_strcmp(*(cmd), "echo"))
+	
+	if (!ft_strcmp(*(cmd), "export"))
+		return export(cmd + 1, envi);
+	else if (!ft_strcmp(*(cmd), "echo"))
 		return (echo(cmd + 1, envi));
 	else if (!ft_strcmp(*(cmd), "unset"))
 		return unset(cmd + 1, envi);
 	else if (!ft_strcmp(*(cmd), "env") && !*(cmd + 1))
 		return env(*envi);
-	else if (!ft_strcmp(*(cmd), "export"))
-		return export(cmd + 1, envi);
 	else if (!ft_strcmp(*(cmd), "pwd"))
 		return pwd(*envi);
 	else if (!ft_strcmp(*(cmd), "cd"))
 		return cd(*(cmd + 1), envi);
 	else if (!ft_strcmp(*(cmd), "exit"))
 		return (_exit_(cmd + 1, envi));
+	
 	return (0);
 }
 
@@ -52,15 +68,11 @@ void	build_in_exe(t_cmd *cmd, t_envi **env, char **files)
 	save_stdout = dup(STDOUT_FILENO);
 	handel_red(cmd, &fd_in, &fd_out, files);
 	if (dup2(fd_in, STDIN_FILENO) == -1)
-	{
-		perror("error dup\n");
-		return ;
-	}
+		return (perror("error dup\n"));
 	if (dup2(fd_out, STDOUT_FILENO) == -1)
-	{
-		perror("error dup2\n");
-		return ;
-	}
+		return (perror("error dup2\n"));
+	cmd->cmd = exec_expand(cmd->cmd);
+	cmd->cmd = exec_expand(cmd->cmd);
 	build_in(cmd->cmd, env);
 	if (fd_in != STDIN_FILENO)
 	{

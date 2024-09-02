@@ -31,7 +31,10 @@ void	cd_removed(t_envi **envi, char *path)
 	if (pwd)
 	{
 		if (oldpwd)
-				oldpwd->value = ft_strdup(pwd->value);
+		{
+			free(oldpwd->value);
+			oldpwd->value = ft_strdup(pwd->value);
+		}
 		pwd->value = ft_strjoin(ft_strjoin(pwd->value, "/"), path);
 	}
 }
@@ -43,7 +46,7 @@ int	cd_home(char **path, t_envi *envi)
 	{
 		env_var = find_node(envi, "HOME");
 		if (env_var)
-			*path = ft_strdup(env_var->value);
+			*path = env_var->value;
 		else
 		{
 			set_exit_status(1, &envi);
@@ -54,12 +57,8 @@ int	cd_home(char **path, t_envi *envi)
 	{
 		env_var = find_node(envi, "OLDPWD");
 		if (!env_var || !env_var->value)
-		{
-			set_exit_status(1, &envi);
-			// g_exit_status = 1;
-			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-			return (1);
-		}
+			return (ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2)
+				, set_exit_status(1, &envi), 1);
 		*path = env_var->value;
 	}
 	return (0);
@@ -74,18 +73,13 @@ int	cd(char *path, t_envi **envi)
 		return (1);
 	getcwd(oldpwd, PATH_MAX);
 	if (path && chdir(path) == -1)
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		perror(path);
-		// g_exit_status = 1;
-		set_exit_status(1, envi);
-		return (1);
-	}
+		return (ft_putstr_fd("minishell: cd: ", 2), perror(path)
+			, set_exit_status(1, envi), 1);
 	test_err = getcwd(pwd, PATH_MAX);
 	if (!test_err)
 	{
-		ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n", 2);
-		return (cd_removed(envi, path), 0);
+		ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent", 2);
+		return (ft_putstr_fd(" directories: No such file or directory\n", 2), cd_removed(envi, path), 0);
 	}
 	_set_env("OLDPWD", envi, oldpwd);
 	_set_env("PWD", envi, pwd);

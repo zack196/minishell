@@ -12,7 +12,8 @@ void	_process(char **cmd, int fd_in, int fd_out, t_envi *envi)
 		perror("error dup2\n");
 		return ;
 	}
-	exe_cmd(cmd, envi);
+	if (cmd && *cmd)
+		exe_cmd(cmd, envi);
 }
 
 int	exe_first_cmd(t_cmd *cmd, t_envi *envi, char **files)
@@ -35,8 +36,7 @@ int	exe_first_cmd(t_cmd *cmd, t_envi *envi, char **files)
 		if (!cmd->next)
 			fd_out = STDOUT_FILENO;
 		handel_red(cmd, &fd_in, &fd_out, files);
-		if ((cmd->cmd))
-			_process(cmd->cmd, fd_in, fd_out, envi);
+		_process(cmd->cmd, fd_in, fd_out, envi);
 	}
 		if (cmd && !cmd->next)
 			return (close(fd_pipe[1]), close(fd_pipe[0]), -1);
@@ -90,15 +90,21 @@ void	last_cmd(t_cmd *cmd, t_envi *envi, int fd_in, char **files)
 
 void	piping(t_cmd *cmd, int fd, t_envi **envi, char **heredoc_files)
 {
-	if (cmd->cmd)
-			fd = exe_first_cmd(cmd, *envi, heredoc_files);
-		if (cmd)
-			cmd = cmd->next;
-		while (cmd && cmd->next && fd != -1)
-		{
-			fd = cmd_med(cmd, *envi, fd, heredoc_files);
-			cmd = cmd->next;
-		}
-		if (cmd && fd != -1)
-			last_cmd(cmd, *envi, fd, heredoc_files);
+	if (cmd)
+	{
+		fd = exe_first_cmd(cmd, *envi, heredoc_files);
+	}
+	if (cmd)
+	{
+		cmd = cmd->next;
+	}
+	while (cmd && cmd->next && fd != -1)
+	{
+		fd = cmd_med(cmd, *envi, fd, heredoc_files);
+		cmd = cmd->next;
+	}
+	if (cmd && fd != -1)
+	{
+		last_cmd(cmd, *envi, fd, heredoc_files);
+	}
 }

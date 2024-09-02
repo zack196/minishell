@@ -95,8 +95,10 @@ char	**execve_env(t_envi *envi)
 			free(envi->value);
 			if (pl_holder < 0)
 				envi->value = ft_strdup("0");
-			else if (pl_holder >= 999)
+			else if (pl_holder == 999)
 				envi->value = ft_strdup("");
+			else if (pl_holder > 999)
+				envi->value = ft_strdup("1");
 			else
 				envi->value = ft_itoa(pl_holder + 1);
 		}
@@ -173,8 +175,7 @@ char	**remove_empty_string(char **ptr)
 		free(ptr[i]);	
 	}
 	res[size] = NULL;
-	free(ptr);
-	return (res);
+	return ( res);
 }
 
 char	**alloc_size(char **cmd)
@@ -230,6 +231,7 @@ char	**exec_expand(char **cmd)
 		ft_free_tab2(tmp);
 	}
 	res[size] = NULL;
+	ft_free_tab2(cmd);
 	return (res);
 }
 
@@ -241,19 +243,22 @@ void	exe_cmd(char **cmd, t_envi *envi)
 
 	if (!cmd || !*cmd)
 		return ;
+	cmd = exec_expand(cmd);
+	cmd = remove_empty_string(cmd);
 	if (is_build(*cmd))
 	{
         exit_code =	build_in(cmd, &envi);
         exit(exit_code);
     }
-	cmd = exec_expand(cmd);
-	cmd = remove_empty_string(cmd);
 	env = get_env(envi);
     path = get_path_cmd(*cmd, env);
-    if (!path)
-        error_cmd(*cmd, ": command not found\n", 127);
-    env = execve_env(envi);
-    execve(path, cmd, env);
+	if (*cmd)
+	{
+    	if (!path)
+    	    error_cmd(*cmd, ": command not found\n", 127);
+    	env = execve_env(envi);
+    	execve(path, cmd, env);
+	}
 	fct1(path, cmd);
     free(path);
 }
