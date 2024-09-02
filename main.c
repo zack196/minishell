@@ -71,6 +71,7 @@ int	main(int ac, char **av, char **env)
 	check_args(ac, av, &dup_env, env);
 	token = NULL;
 	cmd = NULL;
+	rl_catch_signals = 0;
 	set_signals();
 	main_loop(token, dup_env, cmd);
 	ft_free_env(&dup_env);
