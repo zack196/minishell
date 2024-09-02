@@ -51,16 +51,24 @@ void	fil_in_file(char *file, t_redi *red, t_envi *envi)
     int     fd;
     char    *line;
 	
-	set_default();
     fd = open(file, O_WRONLY | O_CREAT, 0777);
+	set_herdoc();
     while (1)
     {
         line = readline(">");
+		if(g_heredoc_interrupted == 6)
+		{
+			close(fd);
+			g_heredoc_interrupted = 0;
+			fd = open(file, O_WRONLY | O_TRUNC);
+            close(fd);
+			return;
+		}
         if (!line || !ft_strcmp(line, red->file))
             break ;
         line = ft_strjoin(line, "\n");
         if (!line)
-            return ;//you should handel it better line li 9bal khas yatfriyaw
+            return ;
         if (red->must_exp == 1)
             expand_var(envi, &line);
         write(fd, line, ft_strlen(line));
