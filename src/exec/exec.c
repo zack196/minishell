@@ -87,7 +87,7 @@ void	_exec(t_cmd *cmd, t_envi **envi)
 			cmd = cmd->next;
 			return (clean_heredoc(heredoc_files), free(heredoc_files));
 		}
-		//child_process 
+		set_child_process();
 		piping(cmd, fd, envi, heredoc_files);
 		ft_wait(nbr_cmd, envi);
 	}
